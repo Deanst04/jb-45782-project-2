@@ -54,3 +54,9 @@ header {
     justify-self: flex-end;
 }
 
+#pills-tabContent {
+  grid-row: 3;
+  grid-column: 2;
+  padding: 20px;
+  overflow-y: auto;
+}

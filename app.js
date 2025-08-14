@@ -1,6 +1,16 @@
 
 "use strict";
 
+function showLoadingBar() {
+  const el = document.getElementById("loading-bar");
+  if (el) el.style.visibility = "visible";
+}
+function hideLoadingBar() {
+  const el = document.getElementById("loading-bar");
+  if (el) el.style.visibility = "hidden";
+}
+
+
 (async () => {
 
     const API_KEY = '82cb46b7b83a294dbd0b8f7c565353bfe2ba817f67c2e3ba39df54b6f7f412bd'
@@ -31,5 +41,13 @@
     } catch (e) {
         console.log(e)
     }
+
+    document.getElementById("search-btn").addEventListener(`click`, async () => {
+
+        const resp = await getData("https://rest.coincap.io/v3/assets?limit=100", API_KEY);
+
+        const apiObj = typeof resp.data === "string" ? JSON.parse(resp.data) : resp
+        const coins = Array.isArray(apiObj.data) ? apiObj.data : [];
+    })
 
 })()
