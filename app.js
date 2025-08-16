@@ -1,20 +1,11 @@
 
 "use strict";
 
-function showLoadingBar() {
-  const el = document.getElementById("loading-bar");
-  if (el) el.style.visibility = "visible";
-}
-function hideLoadingBar() {
-  const el = document.getElementById("loading-bar");
-  if (el) el.style.visibility = "hidden";
-}
-
-
 (async () => {
 
-    const API_KEY = '82cb46b7b83a294dbd0b8f7c565353bfe2ba817f67c2e3ba39df54b6f7f412bd'
+    const API_KEY = '068013e037a74c4f9c53f94038151b33b72ad7d10177faed42bb0cd879bfe8d3'
     const CACHE_AGE_IN_SECONDS = 30
+    const FAV_COINS_KEY = "favCoins";
 
     const getData = async (url, apiKey) => {
         let data = localStorage.getItem(url)
@@ -25,6 +16,9 @@ function hideLoadingBar() {
             console.log(new Date())
             if ((new Date(createdAt).getTime() + CACHE_AGE_IN_SECONDS * 1000) > new Date().getTime()) {
                 console.log('cache hit')
+                showLoading()
+                await new Promise(resolve => setTimeout(resolve, 200)) // display loading spinner for 200 ms
+                hideLoading()
                 return data
             }
         }
@@ -35,15 +29,30 @@ function hideLoadingBar() {
         return data
     }
     try {
-        const tokens = await getData('https://rest.coincap.io/v3/assets', API_KEY)
+        const tokens = await getData('https://rest.coincap.io/v3/assets?limit=102', API_KEY)
         console.log(tokens)
 
     } catch (e) {
         console.log(e)
     }
 
+    const favCoins = []
+
+    const loadingSpinner = (id, displayStyle) => {
+        const targetEl = document.getElementById(id)
+        if (targetEl) targetEl.style.display = displayStyle
+    }
+
+    const showLoading = () => loadingSpinner("loading-spinner", "block")
+
+    const hideLoading = () => loadingSpinner("loading-spinner", "none")
+
+
+    
     const display100Coins = async () => {
 
+        try {
+            showLoading()
         const resp = await getData("https://rest.coincap.io/v3/assets?limit=102", API_KEY);
 
         const apiObj = typeof resp.data === "string" ? JSON.parse(resp.data) : resp
@@ -66,8 +75,27 @@ function hideLoadingBar() {
         `).join(``)
 
         document.getElementById("coins-grid").innerHTML = coinsHTML
+        } catch (err) {
+            console.error("❌ Failed to load coins:", err);
+            document.getElementById("coins-grid").innerHTML = `<p class="text-danger">Failed to load coins. Please try again later.</p>`
+        } finally {
+            hideLoading()
+        }
+
     }
 
     display100Coins()
 
+    const toggleCoin = coinSymbol => {
+        const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
+        const index = favCoins.indexOf(coinSymbol)
+        if (index === -1) {
+            favCoins.push(coinSymbol)
+            localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
+        }
+        else {
+            favCoins.splice(index, 1)
+            localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
+        }
+    }
 })()
