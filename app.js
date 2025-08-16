@@ -42,12 +42,32 @@ function hideLoadingBar() {
         console.log(e)
     }
 
-    document.getElementById("search-btn").addEventListener(`click`, async () => {
+    const display100Coins = async () => {
 
-        const resp = await getData("https://rest.coincap.io/v3/assets?limit=100", API_KEY);
+        const resp = await getData("https://rest.coincap.io/v3/assets?limit=102", API_KEY);
 
         const apiObj = typeof resp.data === "string" ? JSON.parse(resp.data) : resp
-        const coins = Array.isArray(apiObj.data) ? apiObj.data : [];
-    })
+        const coins = apiObj.data
+
+        const coinsHTML = coins.map(({name, symbol}) =>
+            `
+            <div class="card">
+            <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">${symbol}</h5>
+                <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" onchange="toggleCoin('${symbol}')">
+                </div>
+            </div>
+            <p class="card-text text-muted">${name}</p>
+            <button class="btn btn-primary" onclick="showInfo('${symbol}')">More Info</button>
+            </div>
+        </div>
+        `).join(``)
+
+        document.getElementById("coins-grid").innerHTML = coinsHTML
+    }
+
+    display100Coins()
 
 })()
