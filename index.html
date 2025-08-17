@@ -14,9 +14,6 @@
     <header>
         <h1>CryptoFusion</h1>
     </header>
-    <!-- <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-  <div class="progress-bar w-75"></div>
-</div> -->
     <div id="nav-and-search-container">
         <div id="nav-container">
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -31,14 +28,12 @@
   </li>
 </ul>
 </div>
-    <div class="row g-3" id="search-container">
-  <div class="col-auto">
-    <input class="form-control input-lg" type="text" id="search" value="" placeholder="search">
+    <div id="search-container">
+  <div class="input-group input-group-lg mb-3" style="width: 300px;">
+    <input id="search-input" type="text" class="form-control" placeholder="Search coins..." aria-label="Search coins" aria-describedby="search-addon">
+    <span class="input-group-text" id="search-addon">🔍</span>
   </div>
-  <div class="col-auto">
-    <button id="search-btn" type="button" class="btn btn-outline-success">Search</button>
-  </div>
-    </div>
+</div>
     </div>
 <div class="tab-content" id="pills-tabContent">
   <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
@@ -59,6 +54,22 @@
 <div id="loading-spinner" class="spinner-container">
   <div class="spinner"></div>
 </div>
+
+<div class="modal fade" id="favLimitModal" tabindex="-1" aria-labelledby="favLimitModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="favLimitModalLabel">Favorite Limit Reached</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>You already selected 5 favorite coins. To add <strong id="newCoinName"></strong>, please remove one of your current favorites:</p>
+        <div id="favCoinsList" class="list-group"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 
 </html>

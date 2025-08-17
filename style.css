@@ -52,6 +52,7 @@ header {
 
 #search-container {
     justify-self: flex-end;
+    margin-right: 20px;
 }
 
 #pills-tabContent {
@@ -61,13 +62,22 @@ header {
   overflow-y: auto;
 }
 
-#coins-grid {
+/* #coins-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
   padding: 0;
   border: 0.5px solid #ccc;
-  background-color: #ccc;
+  background-color: transparent;
+} */
+
+#coins-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
 }
 
 
@@ -86,7 +96,7 @@ header {
   height: 100%;
 }
 
-.card {
+/* .card {
   width: 100%;
   box-sizing: border-box;
   border-right: 0.5px solid #ccc;
@@ -95,7 +105,17 @@ header {
   margin: 0;
   padding: 10px;
   background-color: white;
+} */
+
+.card {
+  box-shadow: 0 0 0 1px #ccc;
+  border-radius: 4px;
+  margin: 0;
+  padding: 10px;
+  background-color: white;
+  box-sizing: border-box;
 }
+
 
 .spinner-container {
   position: fixed;
@@ -123,5 +143,20 @@ header {
 #loading-spinner {
   display: none;
 }
+
+.no-results {
+  grid-column: 1 / span 3;
+  text-align: center;
+  padding: 40px;
+}
+
+#coins-grid,
+.no-results,
+.no-results h3 {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
 
 

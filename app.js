@@ -46,54 +46,152 @@
     const hideLoading = () => loadingSpinner("loading-spinner", "none")
 
 
-    
-    const display100Coins = async () => {
+    let allCoins = [];
 
+    const renderCoins = coins => {
+
+        const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
+
+        const coinsHTML = coins.map(({name, symbol}) => {
+
+            const isFav = favCoins.includes(symbol)
+            return `
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">${symbol}</h5>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input fav-toggle" type="checkbox" role="switch" data-symbol="${symbol}" ${isFav ? "checked" : ""}>
+                            </div>
+                    </div>
+                    <p class="card-text text-muted">${name}</p>
+                    <button class="btn btn-primary more-info-btn" data-symbol="${symbol}">More Info</button>
+                </div>
+            </div>
+        `
+        }).join(``)
+
+        document.getElementById("coins-grid").innerHTML = coinsHTML
+
+        document.querySelectorAll(".fav-toggle").forEach(toggle => {
+        toggle.addEventListener(`change`, () => {
+            const coinSymbol = toggle.dataset.symbol
+            const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
+
+            if (toggle.checked) {
+                if (favCoins.length >= 5) {
+                    toggle.checked = false
+                    show5CoinsLimitationModal(coinSymbol)
+                    return
+                }
+            }
+
+            toggleCoin(coinSymbol)
+        })
+    })
+    }
+
+    const loadCoins =  async () => {
         try {
             showLoading()
         const resp = await getData("https://rest.coincap.io/v3/assets?limit=102", API_KEY);
-
         const apiObj = typeof resp.data === "string" ? JSON.parse(resp.data) : resp
-        const coins = apiObj.data
-
-        const coinsHTML = coins.map(({name, symbol}) =>
-            `
-            <div class="card">
-            <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">${symbol}</h5>
-                <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" onchange="toggleCoin('${symbol}')">
-                </div>
-            </div>
-            <p class="card-text text-muted">${name}</p>
-            <button class="btn btn-primary" onclick="showInfo('${symbol}')">More Info</button>
-            </div>
-        </div>
-        `).join(``)
-
-        document.getElementById("coins-grid").innerHTML = coinsHTML
+        return apiObj.data
+        
         } catch (err) {
             console.error("❌ Failed to load coins:", err);
             document.getElementById("coins-grid").innerHTML = `<p class="text-danger">Failed to load coins. Please try again later.</p>`
+            return []
         } finally {
             hideLoading()
         }
-
     }
 
-    display100Coins()
+    const display102Coins = async () => {
+        allCoins = await loadCoins()
+        renderCoins(allCoins)
+    }
+
+    display102Coins()
+
+
+    document.getElementById("search-input").addEventListener(`input`, async () => {
+        
+        const userCoin = document.getElementById("search-input").value.trim().toLowerCase()
+
+        const filteredCoins = allCoins.filter(({name, symbol}) => 
+            name.toLowerCase().includes(userCoin) || symbol.toLowerCase().includes(userCoin)
+        )
+
+        if (filteredCoins.length === 0) document.getElementById("coins-grid").innerHTML = `
+        <div class="no-results">
+            <h3>No coin was found 😢</h3>
+        </div>
+        `
+        else renderCoins(filteredCoins)
+        
+    })
+
 
     const toggleCoin = coinSymbol => {
         const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
         const index = favCoins.indexOf(coinSymbol)
         if (index === -1) {
             favCoins.push(coinSymbol)
-            localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
         }
         else {
             favCoins.splice(index, 1)
-            localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
         }
+
+        localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
+    }
+
+    const show5CoinsLimitationModal = newCoinSymbol => {
+
+        const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
+        
+        document.getElementById("newCoinName").innerText = newCoinSymbol
+
+        const favHTML = favCoins.map(symbol => `
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span>${symbol}</span>
+                <div class="form-check form-switch">
+                <input class="form-check-input modal-fav-toggle" type="checkbox" role="switch" data-old-symbol="${symbol}" data-new-symbol="${newCoinSymbol}" checked>
+                </div>
+            </div>
+            `).join(``)
+
+        document.getElementById("favCoinsList").innerHTML = favHTML
+
+        const modal = new bootstrap.Modal(document.getElementById("favLimitModal"));
+        modal.show();
+        
+        setTimeout(() => {
+            document.querySelectorAll(".modal-fav-toggle").forEach(toggle => {
+                toggle.addEventListener(`change`, () => {
+                    const oldCoin = toggle.dataset.oldSymbol;
+                    const newCoin = toggle.dataset.newSymbol;
+
+                    if(!toggle.checked) {
+                        replaceCoin(oldCoin, newCoin);
+                    }
+                })
+            })
+        }, 500)
+    }
+
+    const replaceCoin = (oldCoin, newCoin) => {
+
+        const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
+
+        const updatedFavs = favCoins.filter(symbol => symbol !== oldCoin)
+
+        updatedFavs.push(newCoin)
+
+        localStorage.setItem(FAV_COINS_KEY, JSON.stringify(updatedFavs))
+
+        document.querySelector(".modal.show .btn-close").click()
+
+        renderCoins(allCoins)
     }
 })()
