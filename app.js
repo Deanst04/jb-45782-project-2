@@ -36,8 +36,6 @@
         console.log(e)
     }
 
-    const favCoins = []
-
     const loadingSpinner = (id, displayStyle) => {
         const targetEl = document.getElementById(id)
         if (targetEl) targetEl.style.display = displayStyle
