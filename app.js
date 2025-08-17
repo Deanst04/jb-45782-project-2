@@ -153,10 +153,11 @@
         document.getElementById("newCoinName").innerText = newCoinSymbol
 
         const favHTML = favCoins.map(symbol => `
-            <div class="d-flex align-items-center justify-content-between mb-2">
-                <span>${symbol}</span>
-                <div class="form-check form-switch">
-                <input class="form-check-input modal-fav-toggle" type="checkbox" role="switch" data-old-symbol="${symbol}" data-new-symbol="${newCoinSymbol}" checked>
+            <div class="d-flex justify-content-center align-items-center mb-3 coin-row">
+                <span class="coin-name me-3">${symbol}</span>
+                <div class="form-check form-switch custom-switch">
+                <input class="form-check-input modal-fav-toggle" type="checkbox" role="switch"
+                    data-old-symbol="${symbol}" data-new-symbol="${newCoinSymbol}" checked>
                 </div>
             </div>
             `).join(``)
