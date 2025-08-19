@@ -3,7 +3,7 @@
 
 (async () => {
 
-    const API_KEY = '068013e037a74c4f9c53f94038151b33b72ad7d10177faed42bb0cd879bfe8d3'
+    const API_KEY = 'e7b875f92ac89b7f929a3cae5d2e73d837d39958d3c1b1b331440ce589bd0b10'
     const CACHE_AGE_IN_SECONDS = 30
     const FAV_COINS_KEY = "favCoins";
 
@@ -52,7 +52,7 @@
 
         const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
 
-        const coinsHTML = coins.map(({name, symbol}) => {
+        const coinsHTML = coins.map(({name, symbol, priceUsd}) => {
 
             const isFav = favCoins.includes(symbol)
             return `
@@ -65,7 +65,7 @@
                             </div>
                     </div>
                     <p class="card-text text-muted">${name}</p>
-                    <button class="btn btn-primary more-info-btn" data-symbol="${symbol}">More Info</button>
+                    <button class="btn btn-primary more-info-btn" data-toggle="tooltip" data-placement="top" title="Exchange Rate Tooltip" data-exchange-rate="${priceUsd}">More Info</button>
                 </div>
             </div>
         `
@@ -89,6 +89,65 @@
             toggleCoin(coinSymbol)
         })
     })
+
+    const showTooltip = (element, message, duration = 5000) => {
+        element.setAttribute("title", message)
+        const newTooltipInstance = new bootstrap.Tooltip(element)
+        newTooltipInstance.show()
+
+        setTimeout(() => {
+            newTooltipInstance.dispose()
+            element.dataset.activeTooltip = "false"
+        }, duration)
+    }
+
+        document.querySelectorAll(".more-info-btn").forEach(tooltip => {
+
+            tooltip.dataset.activeTooltip = "false"
+
+            tooltip.addEventListener(`click`, async () => {
+
+                try {
+
+                const usdRate = parseFloat(tooltip.dataset.exchangeRate)
+                
+                const { conversion_rates: { EUR, ILS } } = await fetch(`https://v6.exchangerate-api.com/v6/9e397f3742bcda220e43f433/latest/USD`).then(resp => resp.json())
+
+                const usdToEur = (usdRate * EUR).toFixed(2)
+                const usdToIls = (usdRate * ILS).toFixed(2)
+
+                console.log(`${usdToEur}€`)
+                console.log(`${usdToIls}₪`)
+
+                const isActive = tooltip.dataset.activeTooltip === "true"
+
+                const exchangeUsdToIlsAndEur = `$${(usdRate).toFixed(2)} 🇺🇸 | ${usdToEur}€ 🇪🇺 | ${usdToIls}₪ 🇮🇱`
+
+                tooltip.setAttribute("title", exchangeUsdToIlsAndEur)
+
+                const tooltipInstance = bootstrap.Tooltip.getInstance(tooltip)
+
+                if (isActive) {
+                    tooltipInstance.dispose()
+                    tooltip.dataset.activeTooltip = "false"
+                } else {
+                    showTooltip(tooltip, exchangeUsdToIlsAndEur)
+                    tooltip.dataset.activeTooltip = "true"
+                }
+
+                } catch (err) {
+                    console.log(err)
+                    alert(`An error occurred while fetching exchange rates. Please try again later`)
+                    showTooltip(tooltip, `Unable to load exchange rates. Please try again later`)
+
+                    setTimeout(() => {
+                        const errorTooltip = bootstrap.Tooltip.getInstance(tooltip)
+                        if (errorTooltip) errorTooltip.dispose()
+                    }, 5000)
+                }
+
+            })
+        })
     }
 
     const loadCoins =  async () => {

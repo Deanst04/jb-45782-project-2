@@ -173,3 +173,8 @@ header {
   width: 3rem;
   height: 1.5rem;
 }
+
+.tooltip-inner {
+  white-space: nowrap;
+  max-width: none;
+}
