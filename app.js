@@ -54,14 +54,15 @@
 
         const coinsHTML = coins.map(({name, symbol, priceUsd}) => {
 
-            const isFav = favCoins.includes(symbol)
+            const isFav = favCoins.includes(name)
             return `
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">${symbol}</h5>
                             <div class="form-check form-switch">
-                                <input class="form-check-input fav-toggle" type="checkbox" role="switch" data-symbol="${symbol}" ${isFav ? "checked" : ""}>
+                                <input class="form-check-input fav-toggle" type="checkbox" role="switch" id="fav-${name}" data-name="${name}" ${isFav ? "checked" : ""}>
+                                <label class="form-check-label" for="fav-${name}"></label>
                             </div>
                     </div>
                     <p class="card-text text-muted">${name}</p>
@@ -75,18 +76,18 @@
 
         document.querySelectorAll(".fav-toggle").forEach(toggle => {
         toggle.addEventListener(`change`, () => {
-            const coinSymbol = toggle.dataset.symbol
+            const coinName = toggle.dataset.name
             const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
 
             if (toggle.checked) {
                 if (favCoins.length >= 5) {
                     toggle.checked = false
-                    show5CoinsLimitationModal(coinSymbol)
+                    show5CoinsLimitationModal(coinName)
                     return
                 }
             }
 
-            toggleCoin(coinSymbol)
+            toggleCoin(coinName)
         })
     })
 
@@ -158,7 +159,7 @@
         return apiObj.data
         
         } catch (err) {
-            console.error("❌ Failed to load coins:", err);
+            console.error("Failed to load coins:", err);
             document.getElementById("coins-grid").innerHTML = `<p class="text-danger">Failed to load coins. Please try again later.</p>`
             return []
         } finally {
@@ -172,6 +173,21 @@
     }
 
     display102Coins()
+
+    const searchContainer = document.getElementById("search-container")
+
+    document.getElementById("pills-live-reports-tab").addEventListener("shown.bs.tab", () => {
+    searchContainer.style.display = "none"
+    })
+
+    document.getElementById("pills-home-tab").addEventListener("shown.bs.tab", () => {
+    searchContainer.style.display = "block"
+    })
+
+    document.getElementById("pills-about-tab").addEventListener("shown.bs.tab", () => {
+    searchContainer.style.display = "none"
+    })
+
 
 
     document.getElementById("search-input").addEventListener(`input`, async () => {
@@ -192,11 +208,11 @@
     })
 
 
-    const toggleCoin = coinSymbol => {
+    const toggleCoin = coinName => {
         const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
-        const index = favCoins.indexOf(coinSymbol)
+        const index = favCoins.indexOf(coinName)
         if (index === -1) {
-            favCoins.push(coinSymbol)
+            favCoins.push(coinName)
         }
         else {
             favCoins.splice(index, 1)
@@ -205,21 +221,25 @@
         localStorage.setItem(FAV_COINS_KEY, JSON.stringify(favCoins))
     }
 
-    const show5CoinsLimitationModal = newCoinSymbol => {
+    const show5CoinsLimitationModal = newCoinName => {
 
         const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
         
-        document.getElementById("newCoinName").innerText = newCoinSymbol
+        document.getElementById("newCoinName").innerText = newCoinName
 
-        const favHTML = favCoins.map(symbol => `
-            <div class="d-flex justify-content-center align-items-center mb-3 coin-row">
-                <span class="coin-name me-3">${symbol}</span>
-                <div class="form-check form-switch custom-switch">
-                <input class="form-check-input modal-fav-toggle" type="checkbox" role="switch"
-                    data-old-symbol="${symbol}" data-new-symbol="${newCoinSymbol}" checked>
+        const favHTML = favCoins.map(name => {
+            const coin = allCoins.find(coin => coin.name === name)
+            if (!coin) return ""
+            const symbol = coin.symbol
+            return `
+                <div class="d-flex justify-content-center align-items-center mb-3 coin-row">
+                    <span class="coin-name me-3">${symbol}</span>
+                    <div class="form-check form-switch custom-switch">
+                    <input class="form-check-input modal-fav-toggle" type="checkbox" role="switch"
+                    data-old-name="${name}" data-new-name="${newCoinName}" checked>
+                    </div>
                 </div>
-            </div>
-            `).join(``)
+            `}).join(``)
 
         document.getElementById("favCoinsList").innerHTML = favHTML
 
@@ -229,8 +249,8 @@
         setTimeout(() => {
             document.querySelectorAll(".modal-fav-toggle").forEach(toggle => {
                 toggle.addEventListener(`change`, () => {
-                    const oldCoin = toggle.dataset.oldSymbol;
-                    const newCoin = toggle.dataset.newSymbol;
+                    const oldCoin = toggle.dataset.oldName
+                    const newCoin = toggle.dataset.newName
 
                     if(!toggle.checked) {
                         replaceCoin(oldCoin, newCoin);
@@ -244,7 +264,7 @@
 
         const favCoins = JSON.parse(localStorage.getItem(FAV_COINS_KEY) || "[]")
 
-        const updatedFavs = favCoins.filter(symbol => symbol !== oldCoin)
+        const updatedFavs = favCoins.filter(name => name !== oldCoin)
 
         updatedFavs.push(newCoin)
 
@@ -254,4 +274,94 @@
 
         renderCoins(allCoins)
     }
+
+    
+    
+    document.getElementById("pills-live-reports-tab").addEventListener("shown.bs.tab", () => {
+        initLiveChart()
+    })
+
+    let liveChartInstance = null
+    let liveSocket = null
+
+    const initLiveChart = () => {
+    const favCoins = JSON.parse(localStorage.getItem("favCoins") || "[]")
+    const symbolMap = {}
+    const binanceSymbols = favCoins.map(name => {
+        const coin = allCoins.find(c => c.name === name)
+        if (!coin) return null
+        const symbol = coin.symbol.toLowerCase() + "usdt"
+        symbolMap[symbol] = name
+        return symbol
+    }).filter(Boolean)
+
+    const stream = binanceSymbols.map(s => `${s}@trade`).join("/")
+    const socketUrl = `wss://stream.binance.com:9443/stream?streams=${stream}`
+
+    const ctx = document.getElementById("liveChart").getContext("2d")
+
+    if (liveChartInstance) {
+        liveChartInstance.destroy()
+    }
+
+    liveChartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+        labels: [],
+        datasets: favCoins.map(name => ({
+            label: name,
+            data: [],
+            borderWidth: 2,
+            fill: false,
+            borderColor: getRandomColor()
+        }))
+        },
+        options: {
+        responsive: true,
+        animation: false,
+        scales: {
+            x: { title: { display: true, text: "Time" } },
+            y: { title: { display: true, text: "Price (USD)" } }
+        }
+        }
+    })
+
+    if (liveSocket) {
+        liveSocket.close()
+    }
+
+    liveSocket = new WebSocket(socketUrl)
+
+    liveSocket.onopen = () => console.log("Binance WebSocket connected")
+    liveSocket.onerror = err => console.error("Binance WebSocket error", err)
+
+    liveSocket.onmessage = event => {
+        const msg = JSON.parse(event.data)
+        const stream = msg.stream
+        const price = parseFloat(msg.data.p)
+        const timestamp = new Date().toLocaleTimeString()
+
+        const symbol = stream.split("@")[0]
+        const coinName = symbolMap[symbol]
+        const dataset = liveChartInstance.data.datasets.find(ds => ds.label === coinName)
+
+        if (dataset) {
+        dataset.data.push({ x: timestamp, y: price })
+        if (dataset.data.length > 20) dataset.data.shift()
+        }
+
+        liveChartInstance.update()
+    }
+    }
+
+    const getRandomColor = () => {
+    const r = Math.floor(Math.random() * 200)
+    const g = Math.floor(Math.random() * 200)
+    const b = Math.floor(Math.random() * 200)
+    return `rgb(${r}, ${g}, ${b})`
+    }
+
+
+
+
 })()
