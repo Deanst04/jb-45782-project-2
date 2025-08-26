@@ -3,7 +3,7 @@
 
 (async () => {
 
-    const API_KEY = 'e7b875f92ac89b7f929a3cae5d2e73d837d39958d3c1b1b331440ce589bd0b10'
+    const API_KEY = 'faa414d70ac8daae5836054b6c330532f9559db238499b975ad832e1e5bbd3a3'
     const CACHE_AGE_IN_SECONDS = 30
     const FAV_COINS_KEY = "favCoins";
 
@@ -362,6 +362,22 @@
     }
 
 
+    document.getElementById("pills-about-tab").addEventListener("shown.bs.tab", () => {
+    initAbout()
+})
+
+    const initAbout = () => {
+    const aboutSection = document.getElementById("about-section")
+
+    aboutSection.innerHTML = `
+        <h2>About This Project</h2>
+        <p class="about-text">This website was built as part of a learning project to display live cryptocurrency data in a clear and user-friendly way.</p>
+        <p class="about-text">During development, I faced technical challenges and trial & error, but also gained understanding and pride.</p>
+        <p class="about-text">Technologies used: HTML, CSS, JavaScript, Chart.js, Binance WebSocket.</p>
+        <p class="about-text">Created by Dean, with persistence, curiosity, and commitment — even when it wasn’t easy.</p>
+        <img class="about-img" src="images/my-image.JPG" alt="picture of myself">
+    `
+    }
 
 
 })()

@@ -9,12 +9,16 @@
     <script src="app.js" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style-fix.css"> -->
 </head>
 
 <body>
-    <header>
-        <h1>CryptoFusion</h1>
-    </header>
+  <header>
+    <div class="logo-container">
+      <div class="crypto-logo">₿</div>
+      <h1>CryptoFusion</h1>
+    </div>
+  </header>
     <div id="nav-and-search-container">
         <div id="nav-container">
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -48,7 +52,9 @@
     </div>
   </div>
   <div class="tab-pane fade" id="pills-about" role="tabpanel" aria-labelledby="pills-about-tab" tabindex="0">
-    
+    <div id="about-wrapper">
+      <div id="about-section"></div>
+    </div>
   </div>
 </div>
 <aside id="left"></aside>
@@ -76,3 +82,4 @@
 </body>
 
 </html>
+

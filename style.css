@@ -5,72 +5,116 @@ body {
   height: 100vh;
   width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   scrollbar-width: thin;
 }
 
-
+/* פריסת Grid */
 body {
-    display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: auto auto 3fr;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: auto auto 3fr;
 }
 
-/* body > * {
-    border: 1px solid black;
-} */
-
+/* Header עם לוגו ושם האתר */
 header {
-    display: flex;
-    justify-content: center;
-    grid-row: 1;
-    grid-column: 1 / span 3;
-    align-items: center;
-    border-bottom: 1px solid black;
+  grid-row: 1;
+  grid-column: 1 / span 3;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px 32px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* לוגו ₿ בתוך עיגול עם אפקט ריחוף */
+.crypto-logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #f7931a 0%, #ffb347 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+  will-change: transform, box-shadow;
+}
+
+.crypto-logo:hover {
+  transform: scale(1.2) rotate(2deg);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #ffb347 0%, #f7931a 100%);
+}
+
+.logo-container h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+/* Aside */
 #left {
-    grid-column: 1;
-    grid-row: 1 / span 3;
+  grid-column: 1;
+  grid-row: 1 / span 3;
 }
 
 #right {
-    grid-column: 3;
-    grid-row: 1 / span 3;
+  grid-column: 3;
+  grid-row: 1 / span 3;
 }
 
+/* ניווט וחיפוש */
 #nav-and-search-container {
-    display: flex;
-    justify-content: space-between;
-    grid-row: 2;
-    grid-column: 2;
-    width: 100%;
-    padding: 0;
-    margin-top: 10px;
-    box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  grid-row: 2;
+  grid-column: 2;
+  width: 100%;
+  padding: 0;
+  margin-top: 10px;
+  box-sizing: border-box;
 }
 
 #search-container {
-    justify-self: flex-end;
-    margin-right: 20px;
+  justify-self: flex-end;
+  margin-right: 20px;
 }
 
+.input-group {
+  width: 300px;
+}
+
+/* תוכן הטאבים */
 #pills-tabContent {
   grid-row: 3;
   grid-column: 2;
   padding: 20px;
   overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* #coins-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  padding: 0;
-  border: 0.5px solid #ccc;
-  background-color: transparent;
-} */
+.tab-pane:not(.show) {
+  display: none !important;
+}
 
+/* גריד מטבעות */
 #coins-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -80,33 +124,7 @@ header {
   background-color: transparent;
 }
 
-
-#pills-tabContent,
-#pills-home {
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-#pills-tabContent {
-  grid-row: 3;
-  grid-column: 2;
-  padding: 20px;
-  overflow-y: auto;
-  height: 100%;
-}
-
-/* .card {
-  width: 100%;
-  box-sizing: border-box;
-  border-right: 0.5px solid #ccc;
-  border-bottom: 0.5px solid #ccc;
-  border-radius: 0;
-  margin: 0;
-  padding: 10px;
-  background-color: white;
-} */
-
+/* כרטיסים */
 .card {
   box-shadow: 0 0 0 1px #ccc;
   border-radius: 4px;
@@ -116,7 +134,7 @@ header {
   box-sizing: border-box;
 }
 
-
+/* Spinner */
 .spinner-container {
   position: fixed;
   top: 50%;
@@ -144,6 +162,7 @@ header {
   display: none;
 }
 
+/* No results */
 .no-results {
   grid-column: 1 / span 3;
   text-align: center;
@@ -158,6 +177,7 @@ header {
   box-shadow: none;
 }
 
+/* שורות מטבעות */
 .coin-row {
   text-align: center;
   display: flex;
@@ -179,7 +199,35 @@ header {
   max-width: none;
 }
 
+/* טאב גרף */
 #pills-live-reports {
+  grid-row: 3;
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+#live-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+}
+
+#liveChart {
+  width: 100%;
+  height: 400px;
+  max-height: 50vh;
+}
+
+.tab-pane:not(.active) #liveChart {
+  display: none;
+}
+
+/* טאב About */
+#pills-about {
   grid-row: 3;
   grid-column: 2;
   display: flex;
@@ -188,15 +236,71 @@ header {
   height: 100%;
 }
 
-#liveChart {
+#about-section {
   width: 100%;
-  height: 400px;
-  max-height: 400px;
+  height: 100%;
+  text-align: center;
 }
 
-.tab-pane:not(.active) #liveChart {
-  display: none;
+#about-section img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 20px auto;
+  display: block;
+  transition: transform 0.25s ease-in-out;
 }
 
+#about-section img:hover {
+  transform: scale(1.02);
+}
 
+/* רספונסיביות */
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
 
+  #left,
+  #right {
+    display: none;
+  }
+
+  header {
+    justify-content: center;
+    padding: 12px 20px;
+  }
+
+  .logo-container {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .crypto-logo {
+    width: 32px;
+    height: 32px;
+    font-size: 1.3rem;
+  }
+
+  .logo-container h1 {
+    font-size: 1.5rem;
+  }
+
+  #nav-and-search-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+  }
+
+  #search-container {
+    margin-right: 0;
+  }
+
+  .input-group {
+    width: 100%;
+    max-width: 300px;
+  }
+}
