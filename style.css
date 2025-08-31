@@ -258,157 +258,102 @@ header {
     transform: scale(1.02);
 }
 
-/* Tablet Responsive */
-@media (max-width: 768px) {
-    body {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-    }
-    
-    #left, #right {
-        display: none;
-    }
-    
-    header {
-        justify-content: center;
-        padding: 12px 20px;
-    }
-    
-    .logo-container {
-        flex-direction: row;
-        gap: 8px;
-    }
-    
-    .crypto-logo {
-        width: 32px;
-        height: 32px;
-        font-size: 1.3rem;
-    }
-    
-    .logo-container h1 {
-        font-size: 1.5rem;
-    }
-    
-    #nav-and-search-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        margin-top: 5px;
-    }
-    
-    #search-container {
-        margin-right: 0;
-    }
-    
-    .input-group {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    #coins-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    
-    #liveChart {
-        height: 350px;
-    }
-    
-    #pills-tabContent {
-        padding: 15px;
-    }
-}
+@media (max-width: 600px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
+  }
 
-/* Mobile Responsive */
-@media (max-width: 480px) {
-    #coins-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .card {
-        padding: 8px;
-    }
-    
-    .card-title {
-        font-size: 0.9rem;
-    }
-    
-    .card-text {
-        font-size: 0.8rem;
-    }
-    
-    header {
-        padding: 8px 15px;
-    }
-    
-    .logo-container h1 {
-        font-size: 1.3rem;
-    }
-    
-    .crypto-logo {
-        width: 28px;
-        height: 28px;
-        font-size: 1.1rem;
-    }
-    
-    #nav-and-search-container {
-        padding: 8px 15px;
-    }
-    
-    #pills-tabContent {
-        padding: 10px;
-    }
-    
-    #liveChart {
-        height: 320px;
-    }
-    
-    .nav-pills .nav-link {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-        margin-right: 4px;
-    }
-}
+  header {
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+  }
 
-/* Small Mobile Responsive */
-@media (max-width: 360px) {
-    .card {
-        padding: 6px;
-    }
-    
-    .card-title {
-        font-size: 0.85rem;
-    }
-    
-    .card-text {
-        font-size: 0.75rem;
-    }
-    
-    header {
-        padding: 6px 10px;
-    }
-    
-    .logo-container h1 {
-        font-size: 1.2rem;
-    }
-    
-    .crypto-logo {
-        width: 24px;
-        height: 24px;
-        font-size: 1rem;
-    }
-    
-    #liveChart {
-        height: 280px;
-    }
-    
-    #pills-tabContent {
-        padding: 8px;
-    }
-    
-    .nav-pills .nav-link {
-        padding: 4px 8px;
-        font-size: 0.75rem;
-    }
+  .logo-container {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .crypto-logo {
+    width: 32px;
+    height: 32px;
+    font-size: 1.3rem;
+  }
+
+  .logo-container h1 {
+    font-size: 1.5rem;
+  }
+
+  #nav-and-search-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  #search-container {
+    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .input-group {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  #coins-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .card {
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+
+  #pills-tabContent {
+    padding: 16px;
+    width: 100%;
+  }
+
+  #liveChart {
+    width: 90vw;
+    max-width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    display: block;
+    background-color: #f9f9f9; /* זמני לבדיקה */
+    border: 2px dashed red;
+  }
+
+  #pills-live-reports {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .nav-pills .nav-link {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin: 4px;
+  }
 }
