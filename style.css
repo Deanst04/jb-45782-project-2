@@ -259,48 +259,38 @@ header {
 }
 
 @media (max-width: 600px) {
+
     body {
         padding: 16px;
-        overflow-y: hidden;
         display: flex;
         flex-direction: column;
         align-items: center;
+        overflow-y: hidden;
         box-sizing: border-box;
     }
-    #pills-tabContent {
-        padding: 16px;
-        overflow-y: hidden;
-    }
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 200px) !important;
-        padding-bottom: 80px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
+
     header {
         width: 100%;
         text-align: center;
         padding: 12px;
     }
+
     .logo-container {
         flex-direction: row;
         gap: 8px;
+        align-items: center;
     }
+
     .crypto-logo {
         width: 32px;
         height: 32px;
         font-size: 1.3rem;
     }
-    .card,
-    .card-title {
-        font-size: 1rem;
-    }
+
     .logo-container h1 {
         font-size: 1.5rem;
     }
+
     #nav-and-search-container {
         flex-direction: column;
         align-items: center;
@@ -308,22 +298,26 @@ header {
         margin-top: 10px;
         width: 100%;
     }
+
     #nav-container {
         display: flex;
         justify-content: center;
         width: 100%;
     }
+
     #search-container {
-        margin-right: 0;
         width: 100%;
         display: flex;
         justify-content: center;
+        margin-right: 0;
     }
+
     .input-group {
         width: 100%;
         max-width: 300px;
         margin: 0 auto;
     }
+
     #coins-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -331,413 +325,72 @@ header {
         width: 100%;
         padding-bottom: 40px;
     }
+
+    #coins-grid .card {
+        padding: 10px;
+    }
+
     #coins-grid .card:last-child {
         margin-bottom: 20px;
     }
-    .card {
-        padding: 10px;
+
+    .card-text,
+    .card-title {
+        font-size: 1rem;
     }
-    .card-text {
-        font-size: 0.9rem;
-    }
+
     #pills-tabContent {
         width: 100%;
+        overflow-y: hidden;
     }
+
+    #pills-home {
+        overflow-y: auto !important;
+        max-height: calc(100vh - 150px) !important;
+        padding-bottom: 80px !important;
+    }
+
+    #pills-about,
+    #pills-live-reports {
+        overflow-y: hidden !important;
+    }
+
     #pills-live-reports {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 15px;
-        height: calc(100vh - 200px);
+        padding: 12px;
+        height: calc(100vh - 150px);
         overflow: hidden;
     }
+
     #live-chart-wrapper {
         width: 98%;
-        max-width: 500px;
-        padding: 12px;
+        max-width: 450px;
+        padding: 8px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin: 10px auto;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 10px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        margin: 8px auto;
+        border: 1px solid rgba(0, 0, 0, 0.06);
     }
+
     #liveChart {
-        width: 100%;
-        height: 420px;
-        max-width: 100%;
+        width: 100% !important;
+        height: 350px !important;
+        max-width: 100% !important;
         display: block;
         margin: 0 auto;
-        border-radius: 8px;
+        border-radius: 6px;
     }
+    
     .nav-pills .nav-link {
         padding: 8px 16px;
         font-size: 0.9rem;
         margin: 4px;
-    }
-}
-@media (max-width: 480px) {
-    body {
-        overflow-y: hidden;
-    }
-    #pills-tabContent {
-        overflow-y: hidden;
-    }
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 180px) !important;
-        padding-bottom: 80px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 40px;
-    }
-    #coins-grid .card:last-child {
-        margin-bottom: 20px;
-    }
-    #pills-live-reports {
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 180px);
-        overflow: hidden;
-    }
-    #live-chart-wrapper {
-        width: 99%;
-        padding: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 10px;
-        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
-        margin: 8px auto;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 380px !important;
-        max-width: 100% !important;
-        display: block;
-        margin: 0 auto;
-        border-radius: 6px;
-    }
-}
-@media (max-width: 360px) {
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 150px) !important;
-        padding-bottom: 80px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 40px;
-    }
-    #coins-grid .card:last-child {
-        margin-bottom: 20px;
-    }
-    #pills-live-reports {
-        padding: 6px;
-        height: calc(100vh - 150px);
-    }
-    #live-chart-wrapper {
-        width: 100%;
-        padding: 6px;
-        margin: 4px auto;
-        border-radius: 8px;
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 280px !important;
-        max-width: 100% !important;
-        display: block;
-        margin: 0 auto;
-        border-radius: 4px;
-    }
-}
-@media (max-width: 320px) {
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 140px) !important;
-        padding-bottom: 80px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 40px;
-    }
-    #coins-grid .card:last-child {
-        margin-bottom: 20px;
-    }
-    #pills-live-reports {
-        padding: 4px;
-        height: calc(100vh - 140px);
-    }
-    #live-chart-wrapper {
-        width: 100%;
-        padding: 4px;
-        margin: 2px auto;
-        border-radius: 6px;
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 260px !important;
-        max-width: 100% !important;
-        display: block;
-        margin: 0 auto;
-        border-radius: 4px;
-    }
-}
-@media (min-width: 601px) and (max-width: 1024px) {
-    body {
-        padding: 10px;
-        overflow-y: hidden;
-        height: 100vh;
-    }
-    header {
-        padding: 10px;
-    }
-    #nav-container {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 10px !important;
-        width: 100% !important;
-    }
-    #nav-container .nav-pills {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 5px !important;
-        flex-wrap: nowrap !important;
-    }
-    #nav-container .nav-pills .nav-item {
-        display: inline-block !important;
-    }
-    #nav-container .nav-pills .nav-link {
-        display: inline-block !important;
-        white-space: nowrap !important;
-    }
-    #nav-and-search-container {
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 15px !important;
-        margin-top: 10px;
-        width: 100%;
-    }
-    #search-container {
-        margin-right: 0;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-    .input-group {
-        width: 100%;
-        max-width: 280px;
-        margin: 0 auto;
-    }
-    #pills-tabContent {
-        padding: 10px;
-        overflow-y: hidden;
-        height: 100%;
-    }
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 150px) !important;
-        padding-bottom: 100px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 60px;
-    }
-    #coins-grid .card:nth-last-child(-n + 3) {
-        margin-bottom: 30px;
-    }
-    #pills-live-reports {
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 150px);
-        overflow: hidden;
-    }
-    #live-chart-wrapper {
-        width: 94%;
-        max-width: 900px;
-        padding: 15px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        margin: 0 auto;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        min-height: 450px;
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 450px !important;
-        max-width: 100% !important;
-        display: block !important;
-        margin: 0 auto;
-        border-radius: 10px;
-    }
-    .nav-pills .nav-link {
-        padding: 8px 16px !important;
-        font-size: 0.95rem !important;
-        margin: 4px !important;
-    }
-}
-@media (min-width: 1025px) and (max-width: 1366px) {
-    body {
-        padding: 12px;
-        overflow-y: hidden;
-        height: 100vh;
-    }
-    header {
-        padding: 12px;
-    }
-    #pills-tabContent {
-        padding: 12px;
-        overflow-y: hidden;
-        height: 100%;
-    }
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 160px) !important;
-        padding-bottom: 120px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 80px;
-    }
-    #coins-grid .card:nth-last-child(-n + 4) {
-        margin-bottom: 40px;
-    }
-    #pills-live-reports {
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 160px);
-        overflow: hidden;
-    }
-    #live-chart-wrapper {
-        width: 92%;
-        max-width: 1200px;
-        padding: 18px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 14px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-        margin: 0 auto;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        min-height: 500px;
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 500px !important;
-        max-width: 100% !important;
-        display: block !important;
-        margin: 0 auto;
-        border-radius: 12px;
-    }
-    .nav-pills .nav-link {
-        padding: 10px 20px;
-        font-size: 1rem;
-        margin: 6px;
-    }
-}
-@media (min-width: 1367px) {
-    body {
-        padding: 16px;
-        overflow-y: hidden;
-        height: 100vh;
-    }
-    header {
-        padding: 16px;
-    }
-    #pills-tabContent {
-        padding: 16px;
-        overflow-y: hidden;
-        height: 100%;
-    }
-    #pills-home {
-        overflow-y: auto !important;
-        max-height: calc(100vh - 180px) !important;
-        padding-bottom: 140px !important;
-    }
-    #pills-live-reports,
-    #pills-about {
-        overflow-y: hidden !important;
-    }
-    #coins-grid {
-        padding-bottom: 100px;
-    }
-    #coins-grid .card:nth-last-child(-n + 5) {
-        margin-bottom: 50px;
-    }
-    #pills-live-reports {
-        padding: 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: calc(100vh - 180px);
-        overflow: hidden;
-    }
-    #live-chart-wrapper {
-        width: 90%;
-        max-width: 1400px;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 16px;
-        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
-        margin: 0 auto;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        min-height: 550px;
-    }
-    #liveChart {
-        width: 100% !important;
-        height: 550px !important;
-        max-width: 100% !important;
-        display: block !important;
-        margin: 0 auto;
-        border-radius: 14px;
-    }
-    .nav-pills .nav-link {
-        padding: 12px 24px;
-        font-size: 1.1rem;
-        margin: 8px;
     }
 }
