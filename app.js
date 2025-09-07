@@ -3,7 +3,7 @@
 
 (async () => {
 
-    const API_KEY = 'faa414d70ac8daae5836054b6c330532f9559db238499b975ad832e1e5bbd3a3'
+    const API_KEY = '7f93c6bd117931530751ae467d28915e45d22afd68ac004b427f1900349fc7bd'
     const CACHE_AGE_IN_SECONDS = 30
     const FAV_COINS_KEY = "favCoins";
 
